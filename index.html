@@ -1,53 +1,81 @@
-</html>
-<html>
-<head><meta charset="utf-8">
-	<title>Radio Luz 102.1 fm - Iluminando al mundo</title>
-	
-	<link href="https://luz1021fm.com/favicon.png" rel="icon" type="image/png" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproductor de Radio</title>
+  <style>
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000;
+}
+
+.radio-player {
+  width: 100%;
+  height: 100%;
+  background: url('https://i.postimg.cc/L5KhbNdQ/suprema4.webp') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.play-stop {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.play-stop svg {
+  color: #333;
+}
+
+
+  </style>
 </head>
-<body style="background-color:#13204f;"><script src="js/jquery-3.2.1.min.js" type="ee8b6ffef8b0b15b5fd2d761-text/javascript"></script><script src="js/lunaradio-sincors.js" type="ee8b6ffef8b0b15b5fd2d761-text/javascript"></script>
-<div id="lunaradio" style="width:100%; height:85%;background: #000000 url(https://www.luz1021fm.com/js/portada.jpg) bottom / cover no-repeat;">loading...</div>
+<body>
+  <div class="radio-player">
+    <button id="playStopButton" class="play-stop">
+      <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <svg id="stopIcon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><rect x="6" y="6" width="12" height="12"></rect></svg>
+    </button>
+  </div>
+  <audio id="radioStream" src="https://radio.cromstudio.com.ve/stream"></audio>
+  <script>
 
-<p><script type="ee8b6ffef8b0b15b5fd2d761-text/javascript">
-$("#lunaradio").lunaradio({
-userinterface: "big", 
-backgroundcolor: "",
-fontcolor: "#FFC436",
-hightlightcolor: "#E4F1FF", 
-fontname: "Unica One", 
-googlefont: "Unica+One&display=swap", 
-fontratio: "0.4", 
-radioname: "RADIO LUZ 102.1 FM - ILUMINANDO AL MUNDO", 
-scroll: "true", 
-coverimage: "js/logo.jpg",
-onlycoverimage: "true",
-coverstyle: "animated",
-usevisualizer: "real", 
-visualizertype: "7", 
-metadatatechnic: "",
-ownmetadataurl: "", 
-streamurl: "https://serverstreamgroup.biz:8042/stream", 
-streamtype: "icecast2", 
-icecastmountpoint: "",
-shoutcastpath: "/stream",
-shoutcastid: "1", 
-streamsuffix: "", 
-radionomyid: "", 
-radionomyapikey: "",
-radiojarid: "",  
-radiocoid: "",
-itunestoken: "1000lIPN", 
-metadatainterval: "5000", 
-volume: "98",
-debug: "false",
-autoplay: "true"
+const playStopButton = document.getElementById('playStopButton');
+const radioStream = document.getElementById('radioStream');
+const playIcon = document.getElementById('playIcon');
+const stopIcon = document.getElementById('stopIcon');
+
+playStopButton.addEventListener('click', () => {
+  if (radioStream.paused) {
+    radioStream.play();
+    playIcon.style.display = 'none';
+    stopIcon.style.display = 'block';
+  } else {
+    radioStream.pause();
+    playIcon.style.display = 'block';
+    stopIcon.style.display = 'none';
+  }
 });
-</script></p>
 
-<p></p>
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" style="width:500px;">
-	<tbody>
-		<script src="https://www.luz1021fm.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="714eba93db483128a431ce17-|49" defer></script></body>
-
-        </html>
+  </script>
+</body>
+</html>
