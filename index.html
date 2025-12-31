@@ -1,90 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suprema 92.5 FM En Vivo - Guanare, Portuguesa</title>
   <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden; 
-}
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden; 
+    }
 
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-}
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+    }
 
-.radio-player {
-  width: 100%;
-  height: 100%;
-  background: url('https://i.postimg.cc/L5KhbNdQ/suprema4.webp') no-repeat center center;
-  background-size: cover;
-  position: relative;
-}
+    .radio-player {
+      width: 100%;
+      height: 100%;
+      background: url('https://i.postimg.cc/L5KhbNdQ/suprema4.webp') no-repeat center center;
+      background-size: cover;
+      position: relative;
+    }
 
-.play-stop {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70px;
-  height: 70px;
-  border: none;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
+    /* Capa oscura opcional para mejorar contraste si es necesario */
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.2);
+        pointer-events: none;
+    }
 
-.play-stop svg {
-  color: #333;
-}
+    .play-stop {
+      position: absolute;
+      /* Ajustado para dejar espacio al banner de publicidad */
+      bottom: 120px; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      border: none;
+      border-radius: 50%;
+      background-color: #ffffff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 20; /* Asegura que esté por encima de todo */
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
+    .play-stop:hover {
+        transform: translateX(-50%) scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .play-stop:active {
+        transform: translateX(-50%) scale(0.95);
+    }
+
+    .play-stop svg {
+      color: #333;
+    }
+
+    /* Estilos para el contenedor del Banner */
+    .ad-banner {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        min-height: 90px; /* Altura mínima estándar para banners */
+        background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro para resaltar el anuncio */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    /* Aseguramos que el contenido del anuncio no se desborde */
+    .ad-banner ins {
+        max-width: 100%;
+        overflow: hidden;
+    }
 
   </style>
 </head>
 <body>
+
   <div class="radio-player">
-    <button id="playStopButton" class="play-stop">
+    <div class="overlay"></div>
+    
+    <button id="playStopButton" class="play-stop" aria-label="Reproducir o Pausar">
       <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
       <svg id="stopIcon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><rect x="6" y="6" width="12" height="12"></rect></svg>
     </button>
+
+    <!-- Contenedor del Banner Publicitario -->
+    <div class="ad-banner">
+        <!-- Revive Adserver Etiqueta JS asincrónica -->
+        <ins data-revive-zoneid="1" data-revive-id="3f5b5e135a8d08f01c6c2ca40f88449e"></ins>
+        <script async src="//ads.cromstudio.com.ve/www/delivery/asyncjs.php"></script>
+    </div>
+
   </div>
-  <audio id="radioStream" src="https://radio.cromstudio.com.ve/stream"></audio>
+
+  <audio id="radioStream" src="https://radio.cromstudio.com.ve/stream" preload="none"></audio>
+
   <script>
+    const playStopButton = document.getElementById('playStopButton');
+    const radioStream = document.getElementById('radioStream');
+    const playIcon = document.getElementById('playIcon');
+    const stopIcon = document.getElementById('stopIcon');
 
-const playStopButton = document.getElementById('playStopButton');
-const radioStream = document.getElementById('radioStream');
-const playIcon = document.getElementById('playIcon');
-const stopIcon = document.getElementById('stopIcon');
-
-playStopButton.addEventListener('click', () => {
-  if (radioStream.paused) {
-    radioStream.play();
-    playIcon.style.display = 'none';
-    stopIcon.style.display = 'block';
-  } else {
-    radioStream.pause();
-    playIcon.style.display = 'block';
-    stopIcon.style.display = 'none';
-  }
-});
-
-
+    playStopButton.addEventListener('click', () => {
+      if (radioStream.paused) {
+        // Promesa de play para manejar errores de autoplay en navegadores modernos
+        var playPromise = radioStream.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            // Reproducción automática iniciada
+            playIcon.style.display = 'none';
+            stopIcon.style.display = 'block';
+          })
+          .catch(error => {
+            // Auto-play fue prevenido o hubo error de red
+            console.error("Error al reproducir:", error);
+          });
+        }
+      } else {
+        radioStream.pause();
+        playIcon.style.display = 'block';
+        stopIcon.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
